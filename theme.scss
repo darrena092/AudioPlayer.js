@@ -1,0 +1,38 @@
+$button-colour: #f77007;
+$button-hover-colour: #d2610a;
+$background: #bfc1c1;
+  
+.ac-container {
+  text-align: center;
+  display: inline-block;
+  float: left;
+  border: 1px solid #ababab;
+}
+
+.ac-play-container {
+  background-color: $background;
+  
+  button:focus {
+    outline: none;
+  }
+  
+  .ac-play {
+    font-family: "FontAwesome";
+    margin-top: 15%;
+    border-radius: 50%;
+    background-color: $button-colour;
+    border: none;
+    color: #ffffff;
+    font-size: 2vw;
+    padding-left: 15px;
+  }
+  
+  .ac-play:before {
+    content: "\f04b";
+  }
+  
+  .ac-play:hover {
+    background-color: $button-hover-colour;
+    cursor: pointer;
+  }
+}

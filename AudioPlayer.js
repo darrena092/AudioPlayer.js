@@ -7,7 +7,7 @@ function AudioPlayer(options) {
   this.element = options.element === undefined ? "#player" : options.element;
   this.width = options.width === undefined ? 500 : options.width;
   this.height = options.height === undefined ? 200 : options.height;
-  this.scaleFactor = options.scaleFactor === undefined ? 100 : options.scaleFactor;
+  this.scaleFactor = options.scaleFactor === undefined ? 60 : options.scaleFactor;
   this.amplify = options.amplify === undefined ? 2 : options.amplify;
   this.ceiling = options.ceiling === undefined ? this.height/2 : options.ceiling;
 
@@ -28,6 +28,7 @@ function AudioPlayer(options) {
   this._playTimer = null;
   this._mouseX = 0;
   this._firstRun = true;
+  this._loadDeltaTime = 0;
   //Build audio player.
   this._init();
 }
@@ -87,22 +88,23 @@ AudioPlayer.prototype._draw = function() {
       backContext.putImageData(hlWaveImage, 0, 0, 0, 0, hlWaveX, this.height);
     }
 
-  } else {
-    //Not loaded yet. Maybe a loading animation?
-  }
-
-  //Draw seek line if needed.
-  if(this._mouseX > 0) {
-    backContext.strokeStyle = this.hvColour;
-    backContext.beginPath();
-    backContext.moveTo(this._mouseX, this.height);
-    backContext.lineTo(this._mouseX, 0);
-    backContext.stroke();
-  }
+      //Draw seek line if needed.
+    if(this._mouseX > 0) {
+      backContext.strokeStyle = this.hvColour;
+      backContext.beginPath();
+      backContext.moveTo(this._mouseX, this.height);
+      backContext.lineTo(this._mouseX, 0);
+      backContext.stroke();
+    }
   
-  //Render the frame.
-  var image = backContext.getImageData(0, 0, this.width, this.height);
-  this._drawingContext.putImageData(image, 0, 0);
+    //Render the frame.
+    var image = backContext.getImageData(0, 0, this.width, this.height);
+    this._drawingContext.putImageData(image, 0, 0);
+
+    } else {
+      //Not loaded yet. Draw Animation
+      this._drawLoadingAnimation();
+    }
   
   //Request our next frame.
   var self = this;
@@ -111,20 +113,69 @@ AudioPlayer.prototype._draw = function() {
   });
 };
 
+AudioPlayer.prototype._drawLoadingAnimation = function () {
+  this._loadDeltaTime += 0.1;
+  
+  this._drawingContext.strokeStyle = this.hvColour;
+  this._drawingContext.fillStyle = this.hvColour;
+  for(var i = 0; i < 8; i++) {
+    var heightOffset = Math.sin(this._loadDeltaTime + i) * 20;
+    this._drawingContext.beginPath();
+    this._drawingContext.arc((this.width/2) - (i * 20) + 60, (this.height/2) + heightOffset, 5, 0, 360);
+    this._drawingContext.fill();
+    this._drawingContext.stroke();
+  }
+  
+  
+};
+
 AudioPlayer.prototype._createCanvas = function() {
   //Create the canvas.
+  var buttonContainerID = "ac-controls" + AudioPlayer.numInstances;
+  var canvasContainerID = "ac-surface" + AudioPlayer.numInstances;
+  var playButtonID = "ac-play-btn" + AudioPlayer.numInstances;
   var canvasID = "ac-" + AudioPlayer.numInstances;
+  var containerClass = "ac-container";
+  var playContainerClass = "ac-play-container";
+  var playClass = "ac-play";
+
+
+  $('<div>', {
+    id: buttonContainerID,
+    class: containerClass + " " + playContainerClass
+  }).css({
+    width:  this.height + "px",
+    height: this.height + "px"
+  }).appendTo(this.element);
+
+  $('<div>', {
+    id: canvasContainerID,
+    class: containerClass
+  }).css({
+    width: this.width + "px",
+    height: this.height + "px"
+  }).appendTo(this.element);
+
   $('<canvas>', {
     id: canvasID
   }).prop({
     width: this.width,
     height: this.height
-  }).appendTo(this.element);
+  }).appendTo("#"+canvasContainerID);
+
+  $('<button>', {
+    id: playButtonID,
+    class: playClass
+  }).css({
+    width: (this.height - 30) + "px",
+    height: (this.height - 30) + "px"
+  }).appendTo("#"+buttonContainerID);
+
   this._drawingCanvas = document.getElementById(canvasID);
   this._drawingContext = this._drawingCanvas.getContext('2d');
   var self = this;
   $("#"+canvasID).mousemove(function(e) {
-    self._mouseX = e.clientX;
+    self._mouseX = (e.clientX - this.height)-10;
   });
   $("#"+canvasID).mouseleave(function() {
     self._mouseX = 0;
@@ -230,7 +281,8 @@ AudioPlayer.prototype._loadAudioFile = function() {
         }
         
         self._generateLayers();
-        self._loaded = true;
+        //Wait a couple of seconds to show off the loading animation.
+        setTimeout(function(){self._loaded = true;}, 2000);
       }, function(e) {
         //Some sort of error in decoding the audio data.
         throw new AudioPlayerException("Error decoding audio data: " + e.err);
