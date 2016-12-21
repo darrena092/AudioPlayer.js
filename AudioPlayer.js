@@ -6,7 +6,7 @@ function AudioPlayer(options) {
   this.file = options.file === undefined ? null : options.file;
   this.element = options.element === undefined ? "#player" : options.element;
   this.width = options.width === undefined ? 500 : options.width;
-  this.height = options.height === undefined ? 200 : options.height;
+  this.height = 100;
   this.scaleFactor = options.scaleFactor === undefined ? 60 : options.scaleFactor;
   this.amplify = options.amplify === undefined ? 2 : options.amplify;
   this.ceiling = options.ceiling === undefined ? this.height/2 : options.ceiling;
@@ -14,7 +14,7 @@ function AudioPlayer(options) {
   //Background, highlight and hover respectively.
   this.bgColour = options.bgColour === undefined ? "#7a7b7b" : options.bgColour;
   this.hlColour = options.hlColour === undefined ? "#f77007" : options.hlColour;
-  this.hvColour = options.hvColour === undefined ? "#bfc1c1" : options.hvColour;
+  this.hvColour = options.hvColour === undefined ? "#e0e0e0" : options.hvColour;
 
   //Internal stuff
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -48,11 +48,13 @@ AudioPlayer.prototype.play = function() {
     this._audioSource.start(0, this._playTime);
     this._playing = true;
     var self = this;
-    //NEED to stop trusting this as an accurate time source. Will lag arbitrarily.
-    //TODO - Calculate time passed since last tick in the callback here. Add that to the _playTime variable.
+
+    this._playStart = Date.now();
+    this._previousPlayTime = this._playTime;
     this._playTimer = window.setInterval(function() {
-      self._playTime += 0.05;
-    }, 50);
+      var currentTime = Date.now();
+      self._playTime = ((currentTime - self._playStart)/1000) + self._previousPlayTime;
+    }, 30);
   }
 };
 
@@ -174,6 +176,16 @@ AudioPlayer.prototype._createCanvas = function() {
   this._drawingCanvas = document.getElementById(canvasID);
   this._drawingContext = this._drawingCanvas.getContext('2d');
   var self = this;
+  
+  $("#"+playButtonID).on('click', function() {
+    if(!self._playing) {
+      $(this).addClass("ac-playing");
+    } else {
+      $(this).removeClass("ac-playing");
+    }
+    self._togglePlay();
+  });
+  
   $("#"+canvasID).mousemove(function(e) {
     self._mouseX = (e.clientX - this.height)-10;
   });
@@ -195,6 +207,14 @@ AudioPlayer.prototype._createCanvas = function() {
       }
     }
   });
+};
+
+AudioPlayer.prototype._togglePlay = function() {
+  if(this._playing) {
+    this.pause();
+  } else {
+    this.play();
+  }
 };
 
 AudioPlayer.prototype._generateLayers = function() {
@@ -282,7 +302,7 @@ AudioPlayer.prototype._loadAudioFile = function() {
         
         self._generateLayers();
         //Wait a couple of seconds to show off the loading animation.
-        setTimeout(function(){self._loaded = true;}, 2000);
+        setTimeout(function(){self._loaded = true;}, 1000);
       }, function(e) {
         //Some sort of error in decoding the audio data.
         throw new AudioPlayerException("Error decoding audio data: " + e.err);

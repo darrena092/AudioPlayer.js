@@ -1,12 +1,12 @@
 $button-colour: #f77007;
 $button-hover-colour: #d2610a;
-$background: #bfc1c1;
+$background: #e0e0e0;
   
 .ac-container {
   text-align: center;
   display: inline-block;
   float: left;
-  border: 1px solid #ababab;
+  border: 1px solid $background;
 }
 
 .ac-play-container {
@@ -23,8 +23,9 @@ $background: #bfc1c1;
     background-color: $button-colour;
     border: none;
     color: #ffffff;
-    font-size: 2vw;
+    font-size: 40px;
     padding-left: 15px;
+    transition: .25s ease background-color;
   }
   
   .ac-play:before {
@@ -35,4 +36,15 @@ $background: #bfc1c1;
     background-color: $button-hover-colour;
     cursor: pointer;
   }
+  
+  .ac-playing:before {
+    content: "\f04c" !important;
+  }
+  
+  .ac-playing {
+    padding-top: 4px;
+    padding-left: 6px !important;
+    font-size: 35px !important;
+  }
 }
+
