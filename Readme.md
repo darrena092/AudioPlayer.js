@@ -1,5 +1,9 @@
-# AudioPlayer
+# AudioPlayer.js
 A small audio player widget. Draws a waveform, allows the user to play, seek etc.
+
+[screenshot.png](https://postimg.org/image/6oprn60pz/)
+
+Still very much in development, and pull requests are appreciated!
 
 ## Usage
 Can be dropped in as follows:
@@ -27,5 +31,14 @@ The script has the following options, which can be set when the player is instan
 
 -- Note that the height is hard coded to 100px --
 
+Can also be dropped in using data tags. For example:
+```
+<div class="playerOuter" data-ap data-ap-file="myfile.mp3" data-ap-width="500" data-ap-amplify="2" data-ap-scaleFactor="60"></div>
+```
+
 ## Other Info
 Throws an `AudioPlayerException` with an error message on any kind of issue. Can be caught and handled. This will happen when an instance is created.
+
+## Licensing
+Audioplayer.js is covered by the MIT License. Feel free to use it in projects, commercial or non-commercial. I'd love to hear from you if you find it useful.
+[MIT License Info](https://opensource.org/licenses/MIT)

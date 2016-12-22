@@ -178,12 +178,14 @@ AudioPlayer.prototype._createCanvas = function() {
   var self = this;
   
   $("#"+playButtonID).on('click', function() {
-    if(!self._playing) {
+    if(self._loaded) {
+      if(!self._playing) {
       $(this).addClass("ac-playing");
     } else {
       $(this).removeClass("ac-playing");
     }
-    self._togglePlay();
+    self._togglePlay(); 
+    }
   });
   
   $("#"+canvasID).mousemove(function(e) {
@@ -325,3 +327,18 @@ function AudioPlayerException(message) {
   this.message = message;
   this.name = "AudioPlayerException";
 }
+
+$(document).ready(function() {
+  var playerCount = 0;
+  $("[data-ap]").each(function() {
+    var playerID = "ap-top-" + playerCount;
+    $(this).attr("ID", playerID);
+    new AudioPlayer({
+      element: "#" + playerID,
+      file: $(this).data("ap-file"),
+      width: 500,
+      amplify: 2,
+      scaleFactor: 60
+    });
+  });
+});
