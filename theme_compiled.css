@@ -1,0 +1,44 @@
+.playerOuter {
+  display: table;
+  margin-bottom: 15px;
+}
+
+.ac-container {
+  text-align: center;
+  display: inline-block;
+  float: left;
+  border: 1px solid #e0e0e0;
+}
+
+.ac-play-container {
+  background-color: #e0e0e0;
+}
+.ac-play-container button:focus {
+  outline: none;
+}
+.ac-play-container .ac-play {
+  font-family: "FontAwesome";
+  margin-top: 15%;
+  border-radius: 50%;
+  background-color: #f77007;
+  border: none;
+  color: #ffffff;
+  font-size: 40px;
+  padding-left: 15px;
+  transition: .25s ease background-color;
+}
+.ac-play-container .ac-play:before {
+  content: "\f04b";
+}
+.ac-play-container .ac-play:hover {
+  background-color: #d2610a;
+  cursor: pointer;
+}
+.ac-play-container .ac-playing:before {
+  content: "\f04c" !important;
+}
+.ac-play-container .ac-playing {
+  padding-top: 4px;
+  padding-left: 6px !important;
+  font-size: 35px !important;
+}
