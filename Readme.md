@@ -16,6 +16,12 @@ Can be dropped in as follows:
   });
 ```
 
+OR
+
+```
+<div class="playerOuter" data-ap data-ap-file="myfile.mp3" data-ap-width="500" data-ap-amplify="2" data-ap-scaleFactor="60"></div>
+```
+
 ## Options
 The script has the following options, which can be set when the player is instanced:
 
