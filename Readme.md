@@ -3,6 +3,8 @@ A small audio player widget. Draws a waveform, allows the user to play, seek etc
 
 [![screenshot.png](https://s23.postimg.org/z1l9dmmgb/screenshot.png)](https://postimg.org/image/6oprn60pz/)
 
+Demo at: [AudioPlayer.js on CodePen](http://codepen.io/darrena092/pen/YpBQjN/)
+
 Still very much in development, and pull requests are appreciated!
 
 ## Usage
