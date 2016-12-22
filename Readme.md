@@ -42,6 +42,9 @@ Can also be dropped in using data tags. For example:
 <div class="playerOuter" data-ap data-ap-file="myfile.mp3" data-ap-width="500" data-ap-amplify="2" data-ap-scaleFactor="60"></div>
 ```
 
+## Dependencies
+AudioPlayer.js requires Jquery and FontAwesome.
+
 ## Other Info
 Throws an `AudioPlayerException` with an error message on any kind of issue. Can be caught and handled. This will happen when an instance is created.
 
