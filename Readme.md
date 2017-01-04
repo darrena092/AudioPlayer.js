@@ -44,6 +44,12 @@ Can also be dropped in using data tags. For example:
 <div class="playerOuter" data-ap data-ap-file="myfile.mp3" data-ap-width="500" data-ap-amplify="2" data-ap-scaleFactor="60"></div>
 ```
 
+## Installing With Bower
+Installing with Bower is probably the easiest way of including AudioPlayer.js in your project. Use the following:
+```
+bower install AudioPlayer.js
+```
+
 ## Dependencies
 AudioPlayer.js requires Jquery and FontAwesome.
 
