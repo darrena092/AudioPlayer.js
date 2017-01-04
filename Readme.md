@@ -56,6 +56,8 @@ AudioPlayer.js requires Jquery and FontAwesome.
 ## Other Info
 Throws an `AudioPlayerException` with an error message on any kind of issue. Can be caught and handled. This will happen when an instance is created.
 
+The current version is v0.0.1. Note that this is not production ready.
+
 ## Licensing
 Audioplayer.js is covered by the MIT License. Feel free to use it in projects, commercial or non-commercial. I'd love to hear from you if you find it useful.
 [MIT License Info](https://opensource.org/licenses/MIT)
